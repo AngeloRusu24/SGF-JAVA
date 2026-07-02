@@ -259,6 +259,54 @@ flowchart TD
 
 
 
-<img width="1440" height="1948" alt="image" src="https://github.com/user-attachments/assets/f51b94b9-e0e2-4348-81bf-19ebb4a08868" />
+sequenceDiagram
+    actor MAG as Magazziniere
+    participant OC as OrdineController
+    participant OS as OrdineService
+    participant OR as OrdineRepository
+    actor MAN as Manager
+
+    rect rgb(30, 35, 45)
+    note over MAG, OC: login
+    MAG->>OC: POST /auth/login
+    OC-->>MAG: 200 JWT token
+    end
+
+    rect rgb(30, 35, 45)
+    note over MAG, OR: crea ordine
+    MAG->>OC: POST /ordini
+    OC->>OS: creaOrdine(dto)
+    OS->>OS: valida(dto)
+    OS->>OR: save(ordine)
+    OR-->>OS: ordine (BOZZA)
+    OS-->>OC: ordineDto
+    OC-->>MAG: 201 Created
+    end
+
+    rect rgb(30, 35, 45)
+    note over MAN, OR: approva ordine
+    MAN->>OC: PATCH /ordini/{id}/approva
+    OC->>OS: approvaOrdine(id)
+    OS->>OR: findById(id)
+    OR-->>OS: ordine
+    OS->>OR: save(CONFERMATO)
+    OR-->>OS: ok
+    OC-->>MAN: 200 OK — ordine confermato
+    end
+
+    rect rgb(30, 35, 45)
+    note over MAG, OR: aggiorna stock
+    MAG->>OC: POST /movimenti
+    OC->>OS: registraMovimento()
+    OS->>OR: aggiornaStock()
+    OR-->>OS: stock aggiornato
+    OS->>OS: verificaSottoSoglia()
+    OC-->>MAG: 201 Created
+    end
+
+    opt «extend» se sotto soglia
+    OS-->>MAG: ⚠️ alert sottoscorta
+    OS-->>MAN: ⚠️ alert sottoscorta
+    end
 
 
