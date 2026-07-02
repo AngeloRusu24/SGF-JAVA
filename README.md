@@ -257,3 +257,8 @@ flowchart TD
 | `→` «include» | Il caso d'uso base include sempre quello secondario |
 | `-.->` «extend» | Il caso d'uso secondario si attiva solo in certi casi |
 
+
+
+<img width="1440" height="1948" alt="image" src="https://github.com/user-attachments/assets/f51b94b9-e0e2-4348-81bf-19ebb4a08868" />
+
+
