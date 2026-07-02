@@ -258,7 +258,9 @@ flowchart TD
 | `-.->` «extend» | Il caso d'uso secondario si attiva solo in certi casi |
 
 
+## Sequence Diagram UML
 
+```mermaid
 sequenceDiagram
     actor MAG as Magazziniere
     participant OC as OrdineController
@@ -308,5 +310,17 @@ sequenceDiagram
     OS-->>MAG: ⚠️ alert sottoscorta
     OS-->>MAN: ⚠️ alert sottoscorta
     end
+```
+
+### Legenda
+
+| Fase | Descrizione |
+|---|---|
+| login | Autenticazione del Magazziniere, ottiene JWT token |
+| crea ordine | Creazione di un nuovo ordine in stato BOZZA |
+| approva ordine | Il Manager approva l'ordine, stato → CONFERMATO |
+| aggiorna stock | Registrazione movimento di magazzino e verifica soglia scorte |
+| «extend» | Se lo stock scende sotto soglia, notifica sia Magazziniere che Manager |
+
 
 
